@@ -14,7 +14,7 @@ def blocking(data,block_size):
 
 
 #Bootstrap method
-def bootstrap_method(data,func,times):
+def bootstrap_block(data,func,times):
 
     N = len(data)
     bootstrp_stats = np.zeros(times)
