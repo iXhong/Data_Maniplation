@@ -32,7 +32,7 @@ def bootstrap_method(data,func,times):
 
 
 #Bootstrap block
-def bootstrap_block(data,func,times):
+def bootstrap_1d(data,func,times):
     """
     bootstrap on 2D data
     
