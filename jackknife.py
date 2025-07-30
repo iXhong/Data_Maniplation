@@ -60,24 +60,24 @@ def func(data):
     return np.mean(data,axis=0)
 
 
-#test
-N = 100
-mu = 5.0
-sigma = 1.0
-np.random.seed(42) 
-mock_data = np.random.normal(loc=mu, scale=sigma, size=N)
+# #test
+# N = 100
+# mu = 5.0
+# sigma = 1.0
+# np.random.seed(42) 
+# mock_data = np.random.normal(loc=mu, scale=sigma, size=N)
 
 
-theoretical_error = sigma / np.sqrt(N)
+# theoretical_error = sigma / np.sqrt(N)
 
 
-r = blocking(mock_data,5)
+# r = blocking(mock_data,5)
 
 
-# mean, jk_vals, jk_error = jackknife_block(r,func)
-mean, jk_vals, jk_error = jackknife_1d(r,func)
+# # mean, jk_vals, jk_error = jackknife_block(r,func)
+# mean, jk_vals, jk_error = jackknife_1d(r,func)
 
 
-print(f"样本平均值: {mean:.4f}")
-print(f"理论标准误差: {theoretical_error:.4f}")
-print(f"Jackknife 误差估计: {jk_error:.4f}")
+# print(f"样本平均值: {mean:.4f}")
+# print(f"理论标准误差: {theoretical_error:.4f}")
+# print(f"Jackknife 误差估计: {jk_error:.4f}")
