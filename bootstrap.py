@@ -14,7 +14,7 @@ def blocking(data,block_size):
 
 
 #Bootstrap method
-def bootstrap_block(data,func,times):
+def bootstrap_1d(data,func,times):
 
     N = len(data)
     bootstrp_stats = np.zeros(times)
@@ -32,7 +32,7 @@ def bootstrap_block(data,func,times):
 
 
 #Bootstrap block
-def bootstrap_1d(data,func,times):
+def bootstrap_block(data,func,times):
     """
     bootstrap on 2D data
     
