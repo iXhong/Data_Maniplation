@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def exp_decay(t):
     #data function
     A = 10.0
@@ -14,7 +13,7 @@ def data_generate(func,x,seed):
     #add normal distribution noise on func data
     y = func(x)
     np.random.seed(seed)
-    mu, sigma = 0, 0.1
+    mu, sigma = 0, 5
     noise = np.random.normal(mu,sigma,y.shape)
     data = noise + y
 
@@ -72,21 +71,23 @@ def bootstrap(data, times):
 
 
 #test part
-x = np.linspace(0,10,10)
+x = np.linspace(0,10,100)
 
-mock_data = data_list(exp_decay,x,5)
+mock_data = data_list(exp_decay,x,100)
 
 
-# jack_mean, jack_error = jackknife(mock_data)
+# mean, error = jackknife(mock_data)
 mean, error = bootstrap(mock_data,10)
 
-for i in range(mock_data.shape[1]):
-    print(f"列 {i}: mean = {mean[i]:.4f} ± {error[i]:.4f}")
+
+
+# for i in range(mock_data.shape[1]):
+#     print(f"列 {i}: mean = {mean[i]:.4f} ± {error[i]:.4f}")
 
 plt.figure()
-plt.plot(x,mean)
-for i in range(np.shape(mock_data)[0]):
-    plt.scatter(x,mock_data[i,:])
+plt.errorbar(x,mean,error,fmt='o', capsize=3, label='mean ± error')
+# for i in range(np.shape(mock_data)[0]):
+#     plt.scatter(x,mock_data[i,:])
 
 plt.show()
 
