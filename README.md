@@ -1,7 +1,75 @@
-# Data processing methods
+#LQCD #数据处理 
 
-Here is some data maniplation methods like Jackknife and Bootstrap coded in python.
+# 数据处理基础
 
-+ Functions: jackknife_1d(), bootstrap_1d() are corresponding functions for 1d data processing
-+ Functions: jackknife_blocking,bootstrap_blocking are correspondig functions for 2d data (the blocked data) processing
+本仓库记录格点QCD中用到的数据处理方法
+
   
+
+## 重采样方法：Jackknife & Bootstrap
+
+  
+
+### 1.Data blocking method
+
+由于通过Markov Monte Carlo 方法生成的数据实际上存在auto-correlation,所以为了消除corelation给数据分析带来的影响，
+
+我们可以采用Data blocking method
+
+方法如下：
+
+1. 将原始数据分成大小为K的数据块
+
+2. 计算每个数据块的平均值并将其作为一个新的变量 $X_{i}$
+
+3. 此时每一个分块数据$X_{i}$  就可以认为是独立的
+
+
+### 2.Jackknife
+
+Jackknife方法和下面的Bootstrap方法是一种重采样方法，用以确定数据的平均值和误差
+方法如下：
+
+1. 首先我们有一组大小为N的数据，这些数据是原始数据，我们可以从中计算我们感兴趣的物理量$\theta$ ，比如有效质量
+2. 利用这个N个数据计算感兴趣的物理量的平均值$\bar{{\theta}}$ ,比如有效质量的平均值
+3. 接着分别剔除第 $i$  个数据，然后计算剩下的数据的平均值，记为 $\bar{\theta_{i}}$ 
+4. 由jackknife得到的平均值为$$\widetilde{\theta} = \frac{1}{N}\sum \theta_{n} $$
+5. 方差为$$ \sigma^2_{\hat{\theta}} = \frac{N-1}{N} \sum^N_{n=1}(\theta_{n} - \hat{\theta})^2 $$
+为什么我们在意平均值？因为我们想要得到比如说质量，然后我们测量了好几次得到了好几个质量测量值，为了得到尽可能接近于真实质量的数据，我们就采用求平均值的方法，
+但是由于数据的原因，所以我们采用了jackknife方法求平均值，同时给出误差
+
+
+### 实战分析：
+s3/下有15个数据文件，先对其求有效质量，绘制出有效质量图像，观察平台区，得到大致的质量数值与拟合区间。
+然后利用scipy中的curve_fit对每一个数据文件进行拟合，得到fit_params,之后再对得到的拟合数据做jackknife
+
+
+最终计算得到：
+```
+mumu=0
+M:mean=2.7175418041433277,error=0.0007847771957938374
+A:mean=0.08982750732179894,error=0.00044860320678070514
+mumu=1
+M:mean=2.7175554973229397,error=0.0008686605692995345
+A:mean=0.08987179588718819,error=0.0005256577871133419
+mumu=2
+M:mean=2.717713169742982,error=0.0009135176745859911
+A:mean=0.08999539081311196,error=0.0005572150511491035
+```
+注意考虑到质量要除以a,所以应该为
+```
+mumu=0
+M:mean=4.579057939981313,error=0.0013223495754636162
+A:mean=0.08982750732176362,error=0.0004486032069631378
+mumu=1
+M:mean=4.579081012989154,error=0.0014636930592695928
+A:mean=0.08987179588718819,error=0.0005256577871133419
+mumu=2
+M:mean=4.579346691016926,error=0.0015392772816769206
+A:mean=0.08999539081311196,error=0.0005572150511491035
+```
+
+![effective mass](./effective_mass.png)
+
+
+可见，不同的mumu下，结果相近，且与有效质量计算出的平台数值相近，结果应该是正确的。
