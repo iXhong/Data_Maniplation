@@ -175,8 +175,11 @@ def analysis(mu):
 
 
 if __name__ == "__main__":
-    
+    calc(0)
+    calc(1)
     calc(2)
+    analysis(0)
+    analysis(1)
     analysis(2)
 
     
