@@ -3,10 +3,10 @@
 #since 2025.8
 import numpy as np
 
-DEFAULTSEED = 7271987
+DEFAULTSEED = 7271978
 
 
-def my_bootstrap(data,times):
+def my_bootstrap(data,times,seed=DEFAULTSEED):
     """
     my_bootstrap(data,times)
     Args:
@@ -20,16 +20,39 @@ def my_bootstrap(data,times):
 
     for i in range(times):
         #change the random method as in Analysistoolbox 
-        rng = np.random.default_rng(DEFAULTSEED+i)
+        rng = np.random.default_rng(seed+i)
         chosen = rng.integers(0,N,N)
         bs_samples[i] = np.mean(data[chosen, :],axis=0)
 
     mean = np.mean(bs_samples, axis=0)
-    variance = np.sum((bs_samples - mean) ** 2, axis=0) / (times)
+    # variance = np.sum((bs_samples - mean) ** 2, axis=0) / (times - 1 )
     # error = np.sqrt(variance)
     error = np.std(bs_samples, axis=0, ddof=1)
 
     return mean, error
+
+# def my_bootstrap(data, times, seed=DEFAULTSEED):
+#     """
+#     Args:
+#         data: 2d array, one configuration per line
+#         times: bootstrap resample times
+#         seed: int, base random seed for reproducibility
+#     Return:
+#         mean, error: 1d array
+#     """
+#     N, T = data.shape
+#     bs_samples = np.zeros((times, T))
+
+#     for i in range(times):
+#         rng = np.random.default_rng(seed + i)  # 每次重新初始化 RNG，种子=seed+i
+#         chosen = rng.integers(0, N, size=N)    # 抽取 N 个索引
+#         bs_samples[i] = np.mean(data[chosen, :], axis=0)
+
+#     mean = np.mean(bs_samples, axis=0)
+#     variance = np.sum((bs_samples - mean) ** 2, axis=0) / (times - 1)
+#     error = np.sqrt(variance)
+#     return mean, error
+
 
 
 def my_jackknife(data):

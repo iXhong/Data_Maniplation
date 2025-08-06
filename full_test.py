@@ -8,7 +8,7 @@ from latqcdtools.base.initialize import DEFAULTSEED
 import latqcdtools.base.logger as logger
 import numpy as np
 import matplotlib.pyplot as plt
-from minefunctions import my_bootstrap,my_jackknife,data_gen
+from myfunctions import my_bootstrap,my_jackknife,data_gen
 
 
 EPSILON = 1e-6
