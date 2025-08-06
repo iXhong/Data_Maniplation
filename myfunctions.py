@@ -6,7 +6,7 @@ import numpy as np
 DEFAULTSEED = 7271978
 
 
-def my_bootstrap(data,times,seed=DEFAULTSEED):
+def my_bootstrap(data,times):
     """
     my_bootstrap(data,times)
     Args:
@@ -20,7 +20,7 @@ def my_bootstrap(data,times,seed=DEFAULTSEED):
 
     for i in range(times):
         #change the random method as in Analysistoolbox 
-        rng = np.random.default_rng(seed+i)
+        rng = np.random.default_rng(DEFAULTSEED+i)
         chosen = rng.integers(0,N,N)
         bs_samples[i] = np.mean(data[chosen, :],axis=0)
 
