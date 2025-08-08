@@ -2,6 +2,7 @@
 #@ixhong
 #since 2025.8
 import numpy as np
+import glob
 
 DEFAULTSEED = 7271978
 
@@ -104,6 +105,35 @@ def data_gen(N,T):
     return true_data,data,t
 
 
+def data_load(mu,path):
+    """
+    Function load data from two point correlation .dat file
+    Args:
+        mu(int): mumu ,0,1,2
+        path: path to your correlator data,like:"./s3/mass/"
+    Returns:
+        C_array(np.array): 2d array,C data each line
+        t(np.array): 1d time series 
+    """ 
+    
+    file_list = sorted(glob.glob(f"{path}*.dat"))  # 根据你的文件名修改通配符
+
+    real_data_all = []  # 用于存储每个文件的一维 real 数组
+
+    for fname in file_list:
+        data = np.loadtxt(fname, comments='#')
+        
+        filtered = data[data[:, 3] == mu]  # 第4列是 mumu
+        
+        real_values = filtered[:, 5]
+        
+        real_data_all.append(real_values)
+
+    # 合并成二维数组，每一行是一个文件的数据
+    C_array = np.array(real_data_all)
+    t = np.array(range(C_array.shape[1]))
+
+    return C_array, t
 
 
 
