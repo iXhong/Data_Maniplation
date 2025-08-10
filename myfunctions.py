@@ -136,5 +136,37 @@ def data_load(mu,path):
     return C_array, t
 
 
+def jackknife_samples(data):
+    """
+    return jackknife samples
+    """
+
+    N,T = data.shape
+    jk_samples = np.zeros((N,T))
+
+    for i in range(N):
+        jk_samples[i] = np.mean(np.delete(data,i,axis=0),axis=0)
+
+    t_vals = np.array(range(T))
+    return jk_samples,t_vals
+
+
+#load ht's correlator data
+def ref_data(path):
+    #blocking
+    def blocking(data,block_size):
+
+        N = len(data)
+        M = N//block_size
+        blocked_data = np.zeros((M,block_size))
+        for i in range(M):
+            blocked_data[i,:] = np.array(data[i*block_size:(i+1)*block_size])
+
+        return blocked_data
+
+    data = np.loadtxt(path)
+    data_fit = blocking(data[:,1],96)
+    t_fit = np.array(range(len(data_fit[0])))
+    return data_fit,t_fit
 
 
